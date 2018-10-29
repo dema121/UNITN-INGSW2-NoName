@@ -1,0 +1,26 @@
+{
+  "name": "unitn-ingsw2-noname",
+  "version": "1.0.0",
+  "description": "UNITN - Ingegneria del software 2 project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node api.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dema121/UNITN-INGSW2-NoName.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dema121/UNITN-INGSW2-NoName/issues"
+  },
+  "homepage": "https://github.com/dema121/UNITN-INGSW2-NoName#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "node-fetch": "^2.2.0",
+    "npm": "^6.4.1"
+  }
+}
