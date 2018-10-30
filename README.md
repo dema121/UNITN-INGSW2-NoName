@@ -5,7 +5,7 @@ UNITN - Ingegneria del software 2 project
 * [Demattè Andrea (matricola 186673)](https://github.com/dema121)
 * [Mazzucchi Gianluca (matricola 186379)](https://github.com/gmazzu97)
 * [Meroni Giacomo (matricola 186592)](https://github.com/Jack2021)
-* [Oniarti Alessandro (matricola 185585] (https://github.com/Onni97)
+* [Oniarti Alessandro (matricola 185585)](https://github.com/Onni97)
 * [Pisetta Alex (matricola 188131)](https://github.com/Tex9799)
 
 ## Getting Started
