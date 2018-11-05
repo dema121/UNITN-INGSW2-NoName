@@ -16,6 +16,7 @@ app.get('/', (req, res) => res.send('Hello World! Visit <a href="/team">/team</a
 app.get('/team', (req, res) => {
    res.json(members)
 })
- 
+
 app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
+module.exports = {app};
