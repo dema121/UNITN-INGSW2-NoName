@@ -15,6 +15,16 @@ consumes:
 produces:
 - application/json
 paths:
+  /login:
+    x-summary: Login
+    post:
+      summary: Send login data
+      responses:
+        200:
+          description: Successful response
+          
+    
+
   /questions:
     x-summary: Questions Collection
     get:
