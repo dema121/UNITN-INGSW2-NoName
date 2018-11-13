@@ -21,110 +21,423 @@ paths:
       summary: Send login data
       responses:
         200:
-          description: Successful response
-          
-    
+          description: Logged in correctly
+        401:
+          description: User not logged in correctly
 
-  /questions:
-    x-summary: Questions Collection
+  /users:
     get:
-      summary: List All Questions
+      summary: List users registered with specific filters
       responses:
         200:
           description: Successful Response
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Question'
-          examples:
-            application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
+        401:
+          description: User not logged in
     post:
-      description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/QuestionRequest'
+      summary: Create a new user
       responses:
         201:
-          description: ''
-          schema:
-            $ref: '#/definitions/Question'
-          examples:
-            application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
-definitions:
-  Question:
-    title: Question
-    type: object
-    properties:
-      question:
-        type: string
-      published_at:
-        type: string
-      choices:
-        type: array
-        items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
-          type: string
-    required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+          description: Successful creation
+  /users/{userId}:
+    parameters:
+    - name: "userId"
+      in: "path"
+      description: "id of the user"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: Get registered user by id
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+    put:
+      summary: Update a user info
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+    delete:
+      summary: Delete a user
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /exams:
+    get:
+      summary: List all the exams that the user created or is assigned to
+      responses:
+        200:
+          description: Successful Response
+        401:
+          description: User not logged in
+    post:
+      summary: Create a new exam
+      responses:
+        201:
+          description: Successful creation
+        401:
+          description: User not logged in
+  /exams/{examId}:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: Get exam by id
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to view this item
+    put:
+      summary: Update a exam
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+    delete:
+      summary: Delete a exam
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /exams/{examId}/teacherassistants:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: List all the teacher assistants assigned to the exam
+      responses:
+        200:
+          description: Successful Response
+        401:
+          description: User not logged in
+    post:
+      summary: Add a new teacher assistant
+      responses:
+        201:
+          description: Successful add
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+  
+  /exams/{examId}/teacherassistants/{taId}:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "taId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    delete:
+      summary: Delete a teacher assistant
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /exams/{examId}/tasks:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: List all the tasks or the tasks assigned to the user based on filters
+      responses:
+        200:
+          description: Successful Response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+    post:
+      summary: Add a new task
+      responses:
+        201:
+          description: Successful add
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /exams/{examId}/tasks/{taskId}:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "taskId"
+      in: "path"
+      description: "id of the task"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: Get task by id in the current exam
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to view this item
+    put:
+      summary: Update a task info
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+    delete:
+      summary: Delete a task
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action          
+          
+          
+  /exams/{examId}/members:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: List all the students assigned to the current exam
+      responses:
+        200:
+          description: Successful Response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+    post:
+      summary: Add a new student
+      responses:
+        201:
+          description: Successful add
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /exams/{examId}/members/{userId}:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "userId"
+      in: "path"
+      description: "id of the student"
+      required: true
+      type: "integer"
+      format: "int64"
+    delete:
+      summary: Delete a task
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action  
+          
+          
+  /exams/{examId}/tasks/{taskId}/submissions:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "taskId"
+      in: "path"
+      description: "id of the task"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: List all the submissions made by the user on the current task
+      responses:
+        200:
+          description: Successful Response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+    post:
+      summary: Add a new submission
+      responses:
+        201:
+          description: Successful add
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action, deadline reached or user not assigned to the current exam/task
+
+  /exams/{examId}/tasks/{taskId}/submissions/last:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "taskId"
+      in: "path"
+      description: "id of the task"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: List the last submission made by the user on the current task
+      responses:
+        200:
+          description: Successful Response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action  
+          
+  /exams/{examId}/tasks/{taskId}/submissions/{subId}:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "taskId"
+      in: "path"
+      description: "id of the task"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "subId"
+      in: "path"
+      description: "id of the submission"
+      required: true
+      type: "integer"
+      format: "int64"
+    get:
+      summary: Get submission by id in the current task
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to view this item
+          
+  /exams/{examId}/tasks/{taskId}/submissions/{subId}/reviewer:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "taskId"
+      in: "path"
+      description: "id of the task"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "subId"
+      in: "path"
+      description: "id of the submission"
+      required: true
+      type: "integer"
+      format: "int64"
+    put:
+      summary: Set the student that have to review and comment the submission.
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /exams/{examId}/tasks/{taskId}/submissions/{subId}/review:
+    parameters:
+    - name: "examId"
+      in: "path"
+      description: "id of the exam"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "taskId"
+      in: "path"
+      description: "id of the task"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "subId"
+      in: "path"
+      description: "id of the submission"
+      required: true
+      type: "integer"
+      format: "int64"
+    post:
+      summary: Submit a review as a reviewer for the current submission
+      responses:
+        201:
+          description: Successful submit
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
