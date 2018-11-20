@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: '1.0'
-  title: "NoName API project"
+  title: "Exams manager"
   description: UNITN - Ingegneria del software 2 project
   license:
     name: MIT
@@ -15,30 +15,103 @@ consumes:
 produces:
 - application/json
 paths:
-  /login:
+  /v1/login:
     x-summary: Login
     post:
       summary: Send login data
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                description: 'Email address of the user'
+              password:
+                type: string
+                description: 'Password of the user'
       responses:
         200:
           description: Logged in correctly
+          schema:
+            $ref: '#/definitions/User'
         401:
           description: User not logged in correctly
-
-  /users:
+          
+  /v1/profile:
+    x-summary: Profile
     get:
-      summary: List users registered with specific filters
+      summary: Get my profile
       responses:
         200:
-          description: Successful Response
+          description: 'Logged in correctly, the profile'
+          schema:
+            $ref: '#/definitions/User'
+        401:
+          description: User not logged in
+
+  /v1/users:
+    get:
+      summary: List users registered with specific filters
+      parameters:
+        - in: query
+          name: email
+          type: string
+          description: The email to search with
+        - in: query
+          name: text
+          type: string
+          description: The text to search with in name and surname
+      responses:
+        200:
+          description: Collection of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
         401:
           description: User not logged in
     post:
       summary: Create a new user
+      parameters:
+        - in: body
+          name: user
+          required: true
+          schema:
+            type: object
+            required:
+              - username
+              - name
+              - surname
+              - email
+              - password
+            properties:
+              username:
+                type: string
+                description: 'Username of the user'
+              name:
+                type: string
+                description: 'First name of the user'
+              surname:
+                type: string
+                description: 'Last name of the user'
+              email:
+                type: string
+                description: 'Email address of the user'
+              password:
+                type: string
+                description: 'Password of the user'
       responses:
         201:
-          description: Successful creation
-  /users/{userId}:
+          description: 'Successful creation, created user'
+          schema:
+            $ref: '#/definitions/User'
+  /v1/users/{userId}:
     parameters:
     - name: "userId"
       in: "path"
@@ -50,18 +123,44 @@ paths:
       summary: Get registered user by id
       responses:
         200:
-          description: Successful response
+          description: 'Successful response'
+          schema:
+            $ref: '#/definitions/User'
         401:
-          description: User not logged in
+          description: 'User not logged in'
     put:
       summary: Update a user info
+      parameters:
+        - in: body
+          name: user
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                description: 'Username of the user'
+              name:
+                type: string
+                description: 'First name of the user'
+              surname:
+                type: string
+                description: 'Last name of the user'
+              email:
+                type: string
+                description: 'Email address of the user'
+              password:
+                type: string
+                description: 'Password of the user'
       responses:
         200:
-          description: Successful response
+          description: 'Successful update'
+          schema:
+            $ref: '#/definitions/User'
         401:
-          description: User not logged in
+          description: 'User not logged in'
         403:
-          description: Not authorized to do this action
+          description: 'Not authorized to do this action'
     delete:
       summary: Delete a user
       responses:
@@ -72,22 +171,55 @@ paths:
         403:
           description: Not authorized to do this action
           
-  /exams:
+  /v1/exams:
     get:
       summary: List all the exams that the user created or is assigned to
+      parameters:
+        - in: query
+          name: text
+          type: string
+          description: The text to search with
       responses:
         200:
-          description: Successful Response
+          description: 'Collection of exams'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Exam'
         401:
           description: User not logged in
     post:
       summary: Create a new exam
+      parameters:
+        - in: body
+          name: exam
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - taskNumbers
+            properties:
+              name:
+                type: string
+                description: 'Name of the exam'
+              description:
+                type: string
+                description: 'Description of the exam'
+              deadline:
+                type: string
+                description: 'Deadline timestamp of the exam'
+              taskNumbers:
+                type: integer
+                description: 'Number of tasks to select to form the exam'
       responses:
         201:
-          description: Successful creation
+          description: 'Successful creation, the exam'
+          schema:
+            $ref: '#/definitions/Exam'
         401:
           description: User not logged in
-  /exams/{examId}:
+  /v1/exams/{examId}:
     parameters:
     - name: "examId"
       in: "path"
@@ -99,22 +231,45 @@ paths:
       summary: Get exam by id
       responses:
         200:
-          description: Successful response
+          description: 'The exam'
+          schema:
+            $ref: '#/definitions/Exam'
         401:
           description: User not logged in
         403:
           description: Not authorized to view this item
     put:
-      summary: Update a exam
+      summary: Update an exam
+      parameters:
+        - in: body
+          name: exam
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: 'Name of the exam'
+              description:
+                type: string
+                description: 'Description of the exam'
+              deadline:
+                type: string
+                description: 'Deadline timestamp of the exam'
+              taskNumbers:
+                type: integer
+                description: 'Number of tasks to select to form the exam'
       responses:
         200:
-          description: Successful response
+          description: 'Successful update, the exam'
+          schema:
+            $ref: '#/definitions/Exam'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
     delete:
-      summary: Delete a exam
+      summary: Delete an exam
       responses:
         200:
           description: Successful response
@@ -123,7 +278,7 @@ paths:
         403:
           description: Not authorized to do this action
           
-  /exams/{examId}/teacherassistants:
+  /v1/exams/{examId}/marks:
     parameters:
     - name: "examId"
       in: "path"
@@ -131,40 +286,86 @@ paths:
       required: true
       type: "integer"
       format: "int64"
-    get:
-      summary: List all the teacher assistants assigned to the exam
+    put:
+      summary: 'Set the mark assigned by the teacher assistant'
+      parameters:
+      - in: body
+        name: mark
+        required: true
+        schema:
+          $ref: '#/definitions/ExamMark'
       responses:
         200:
-          description: Successful Response
+          description: Successful response
+          schema:
+            $ref: '#/definitions/ExamMark'
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action        
+    
+  /v1/teacherassistants:
+    parameters:
+    - name: examId
+      in: query
+      description: 'id of the exam'
+      required: true
+      type: 'integer'
+    get:
+      summary: 'List all the teacher assistants assigned to an exam'
+      responses:
+        200:
+          description: 'Collection of users that operates as teacher assistants for this exam'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
         401:
           description: User not logged in
     post:
-      summary: Add a new teacher assistant
+      summary: 'Add a new teacher assistant'
+      parameters:
+        - in: body
+          name: teacherassistant
+          required: true
+          schema:
+            type: object
+            required:
+              - userId
+              - examId
+            properties:
+              userId:
+                type: integer
+                description: 'User ID'
+              examId:
+                type: integer
+                description: 'Exam ID'
       responses:
         201:
-          description: Successful add
+          description: 'Successful add, the added user'
+          schema:
+              $ref: '#/definitions/User'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
           
   
-  /exams/{examId}/teacherassistants/{taId}:
+  /v1/teacherassistants/{taId}:
     parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
     - name: "taId"
       in: "path"
-      description: "id of the exam"
+      description: "id of the teacher assistant user"
       required: true
       type: "integer"
       format: "int64"
     delete:
-      summary: Delete a teacher assistant
+      summary: 'Delete a teacher assistant from an exam'
+      parameters:
+        - in: query
+          name: examId
+          required: true
+          type: integer
       responses:
         200:
           description: Successful response
@@ -173,41 +374,46 @@ paths:
         403:
           description: Not authorized to do this action
           
-  /exams/{examId}/tasks:
-    parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
+  /v1/tasks:
     get:
-      summary: List all the tasks or the tasks assigned to the user based on filters
+      summary: 'List all the tasks or the tasks assigned to the user based on filters'
+      parameters:
+        - name: 'examId'
+          in: 'query'
+          description: 'id of the exam'
+          required: true
+          type: 'integer'
       responses:
         200:
-          description: Successful Response
+          description: 'Collection of tasks'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Task'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
     post:
       summary: Add a new task
+      parameters:
+        - in: body
+          name: task
+          required: true
+          schema:
+            $ref: '#/definitions/Task'
       responses:
         201:
-          description: Successful add
+          description: 'Successful add, the task'
+          schema:
+            $ref: '#/definitions/Task'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
           
-  /exams/{examId}/tasks/{taskId}:
+  /v1/tasks/{taskId}:
     parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
     - name: "taskId"
       in: "path"
       description: "id of the task"
@@ -215,25 +421,35 @@ paths:
       type: "integer"
       format: "int64"
     get:
-      summary: Get task by id in the current exam
+      summary: 'Get task by id'
       responses:
         200:
-          description: Successful response
+          description: 'Successful response, the task'
+          schema:
+            $ref: '#/definitions/Task'
         401:
           description: User not logged in
         403:
           description: Not authorized to view this item
     put:
-      summary: Update a task info
+      summary: 'Update a task info'
+      parameters:
+        - in: body
+          name: task
+          required: true
+          schema:
+            $ref: '#/definitions/Task'
       responses:
         200:
-          description: Successful response
+          description: 'Successful update, the task'
+          schema:
+            $ref: '#/definitions/Task'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
     delete:
-      summary: Delete a task
+      summary: 'Delete a task'
       responses:
         200:
           description: Successful response
@@ -243,49 +459,63 @@ paths:
           description: Not authorized to do this action          
           
           
-  /exams/{examId}/members:
-    parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
+  /v1/members:
     get:
       summary: List all the students assigned to the current exam
+      parameters:
+        - name: 'examId'
+          in: 'query'
+          description: 'id of the exam'
+          required: true
+          type: 'integer'
       responses:
         200:
-          description: Successful Response
+          description: 'Collection of user members'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
     post:
-      summary: Add a new student
+      summary: 'Add a new user member (student)'
+      parameters:
+        - in: body
+          name: member
+          required: true
+          schema:
+            type: object
+            required:
+              - userId
+              - examId
+            properties:
+              userId:
+                type: integer
+                description: 'User ID'
+              examId:
+                type: integer
+                description: 'Exam ID'
       responses:
         201:
-          description: Successful add
+          description: 'Successful add, the added user'
+          schema:
+              $ref: '#/definitions/User'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
           
-  /exams/{examId}/members/{userId}:
+  /v1/members/{userId}:
     parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
+    - name: 'userId'
+      in: 'path'
+      description: 'id of the member'
       required: true
-      type: "integer"
-      format: "int64"
-    - name: "userId"
-      in: "path"
-      description: "id of the student"
-      required: true
-      type: "integer"
-      format: "int64"
+      type: 'integer'
     delete:
-      summary: Delete a task
+      summary: 'Delete a member'
       responses:
         200:
           description: Successful response
@@ -295,77 +525,51 @@ paths:
           description: Not authorized to do this action  
           
           
-  /exams/{examId}/tasks/{taskId}/submissions:
-    parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
-    - name: "taskId"
-      in: "path"
-      description: "id of the task"
-      required: true
-      type: "integer"
-      format: "int64"
+  /v1/submissions:
     get:
-      summary: List all the submissions made by the user on the current task
+      summary: 'List all the submissions made on a task by all users or single user'
+      parameters:
+      - name: 'taskId'
+        in: 'query'
+        description: 'id of the task'
+        required: true
+        type: 'integer'
+      - name: 'userId'
+        in: 'query'
+        description: 'id of the user'
+        required: false
+        type: 'integer'
       responses:
         200:
-          description: Successful Response
+          description: 'Collection of submissions'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Submission'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
     post:
-      summary: Add a new submission
+      summary: 'Add a new submission'
+      parameters:
+        - in: body
+          name: member
+          required: true
+          schema:
+            $ref: '#/definitions/Submission'
       responses:
         201:
           description: Successful add
+          schema:
+            $ref: '#/definitions/Submission'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action, deadline reached or user not assigned to the current exam/task
-
-  /exams/{examId}/tasks/{taskId}/submissions/last:
-    parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
-    - name: "taskId"
-      in: "path"
-      description: "id of the task"
-      required: true
-      type: "integer"
-      format: "int64"
-    get:
-      summary: List the last submission made by the user on the current task
-      responses:
-        200:
-          description: Successful Response
-        401:
-          description: User not logged in
-        403:
-          description: Not authorized to do this action  
           
-  /exams/{examId}/tasks/{taskId}/submissions/{subId}:
+  /v1/submissions/{subId}:
     parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
-    - name: "taskId"
-      in: "path"
-      description: "id of the task"
-      required: true
-      type: "integer"
-      format: "int64"
     - name: "subId"
       in: "path"
       description: "id of the submission"
@@ -373,29 +577,19 @@ paths:
       type: "integer"
       format: "int64"
     get:
-      summary: Get submission by id in the current task
+      summary: 'Get submission by id in the current task'
       responses:
         200:
-          description: Successful response
+          description: 'The submission'
+          schema:
+            $ref: '#/definitions/Submission'
         401:
           description: User not logged in
         403:
           description: Not authorized to view this item
           
-  /exams/{examId}/tasks/{taskId}/submissions/{subId}/reviewer:
+  /v1/submissions/{subId}/reviewer:
     parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
-    - name: "taskId"
-      in: "path"
-      description: "id of the task"
-      required: true
-      type: "integer"
-      format: "int64"
     - name: "subId"
       in: "path"
       description: "id of the submission"
@@ -403,41 +597,305 @@ paths:
       type: "integer"
       format: "int64"
     put:
-      summary: Set the student that have to review and comment the submission.
+      summary: 'Set the student that have to review and comment the submission.'
+      parameters:
+      - in: body
+        name: reviewer
+        required: true
+        schema:
+          type: object
+          required:
+            - userId
+          properties:
+            userId:
+              type: integer
+              description: 'User ID'
       responses:
         200:
           description: Successful response
+          schema:
+            $ref: '#/definitions/Submission'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
-          
-  /exams/{examId}/tasks/{taskId}/submissions/{subId}/review:
+  
+  /v1/submissions/{subId}/mark:
     parameters:
-    - name: "examId"
-      in: "path"
-      description: "id of the exam"
-      required: true
-      type: "integer"
-      format: "int64"
-    - name: "taskId"
-      in: "path"
-      description: "id of the task"
-      required: true
-      type: "integer"
-      format: "int64"
     - name: "subId"
       in: "path"
       description: "id of the submission"
       required: true
       type: "integer"
       format: "int64"
-    post:
-      summary: Submit a review as a reviewer for the current submission
+    put:
+      summary: 'Set the mark assigned by the teacher assistant'
+      parameters:
+      - in: body
+        name: mark
+        required: true
+        schema:
+          $ref: '#/definitions/SubmissionMark'
       responses:
-        201:
-          description: Successful submit
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/SubmissionMark'
         401:
           description: User not logged in
         403:
           description: Not authorized to do this action
+          
+  /v1/reviews:
+    get:
+      summary: 'Get the review for a given submission'
+      parameters:
+      - name: 'subId'
+        in: 'query'
+        description: 'id of the submission'
+        required: true
+        type: 'integer'
+      responses:
+        201:
+          description: 'Review'
+          schema:
+            $ref: '#/definitions/Review'
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+    post:
+      summary: Submit a review for a submission
+      parameters:
+      - in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/Review'
+      responses:
+        201:
+          description: Successful submit
+          schema:
+            $ref: '#/definitions/Review'
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+          
+          
+          
+definitions:
+  User:
+    type: object
+    required:
+      - id
+      - username
+      - name
+      - surname
+      - email
+    properties:
+      id:
+        type: integer
+        description: 'User ID'
+      username:
+        type: string
+        description: 'User username'
+      name:
+        type: string
+        description: 'User name'
+      surname:
+        type: string
+        description: 'User surname'
+      email:
+        type: string
+        description: 'User email'
+      password:
+        type: string
+        description: 'User password'
+  Exam:
+    type: object
+    required:
+      - id
+      - name
+      - createdBy
+      - taskNumbers
+      - teacherassistants
+      - tasks
+      - members
+      - visible
+    properties:
+      id:
+        type: integer
+        description: 'Exam ID'
+      name:
+        type: string
+        description: 'Exam name'
+      description:
+        type: string
+        description: 'Exam description'
+      createdBy:
+        type: integer
+        description: 'Exam user creator'
+      deadline:
+        type: string
+        description: 'Exam deadline timestamp'
+      taskNumbers:
+        type: integer
+        description: 'Number of tasks/questions to propose to members'
+      teacherassistants:
+        type: array
+        items:
+          type: integer
+          description: 'User ID'
+        description: 'Users that operates as teacher assistants in this exam'
+      tasks:
+        type: array
+        items:
+          type: integer
+          description: 'Task ID'
+        description: 'Collection of tasks that compose this exam'
+      members:
+        type: array
+        items:
+          type: integer
+          description: 'User ID'
+        description: 'Users that have to do this exam'
+      visible:
+        type: boolean
+        description: 'Visibility state'
+  Task:
+    type: object
+    required:
+      - examId
+      - text
+      - type
+      - peerReview
+    properties:
+      id:
+        type: integer
+        description: 'Task ID'
+      examId:
+        type: string
+        description: 'ID of the exam containing this task'
+      text:
+        type: string
+        description: 'Task question'
+      description:
+        type: string
+        description: 'Task description'
+      type:
+        type: string
+        enum: [single, multiple, open]
+        description: 'Task description'
+      defaultAnswers:
+        type: array
+        items:
+          type: string
+          description: 'Answer text'
+        description: 'Task default answers to choose from'
+      rightAnswers:
+        type: array
+        items:
+          type: integer
+          description: 'Index of the right answer'
+        description: 'Indexes of right answers from the defaultAnswers'
+      peerReview:
+        type: boolean
+        description: 'Enabled peer review or not for this task'
+      deadline:
+        type: string
+        description: 'Task deadline timestamp'
+      reviewDeadline:
+        type: string
+        description: 'Task peer review deadline timestamp'
+  Submission:
+    type: object
+    required:
+      - taskId
+      - userId
+    properties:
+      id:
+        type: integer
+        description: 'Submission ID'
+      taskId:
+        type: integer
+        description: 'ID of the task where this submission comes from'
+      userId:
+        type: integer
+        description: 'ID of the user that submitted this submission'
+      date:
+        type: string
+        description: 'Timestamp of the submission creation date'
+      peerReviewUserId:
+        type: integer
+        description: 'ID of the user that will have to review this submission'
+      answerOpen:
+        type: string
+        description: 'The content of this submission if type of task is open'
+      answerChoices:
+        type: array
+        items: 
+          type: integer
+          description: 'Indexes of choosen answers from the defaultAnswers'
+        description: 'The content of this submission if type of task is not open'
+  Review:
+    type: object
+    required:
+      - submissionId
+      - comment
+    properties:
+      id:
+        type: integer
+        description: 'Review ID'
+      submissionId:
+        type: integer
+        description: 'ID of the submission which this review was written from'
+      userId:
+        type: integer
+        description: 'ID of the user that have written this review'
+      date:
+        type: string
+        description: 'Timestamp of the review creation date'
+      comment:
+        type: string
+        description: 'Comment of this review'
+  SubmissionMark:
+    type: object
+    required:
+      - submissionId
+      - mark
+    properties:
+      id:
+        type: integer
+        description: 'SubmissionMark ID'
+      submissionId:
+        type: integer
+        description: 'ID of the submission of this mark'
+      mark:
+        type: number
+        description: 'Mark value'
+      comment:
+        type: string
+        description: 'Comment for the mark'
+  ExamMark:
+    type: object
+    required:
+      - examId
+      - userId
+      - mark
+    properties:
+      id:
+        type: integer
+        description: 'ExamMark ID'
+      examId:
+        type: integer
+        description: 'ID of the exam of this mark'
+      userId:
+        type: integer
+        description: 'ID of the user of this mark'
+      mark:
+        type: number
+        description: 'Mark value'
+      comment:
+        type: string
+        description: 'Comment for the mark'
