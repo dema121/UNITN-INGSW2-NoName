@@ -1,0 +1,14 @@
+[
+    {
+        "id":1,
+        "name":"Esame 1",
+        "description":"Descrizione esame1",
+        "createdBy":1,
+        "deadline":1545778800,
+        "taskNumbers":20,
+        "teacherassistants":[2],
+        "tasks":[1,2,3],
+        "members":[3],
+        "visible":true
+    }    
+]

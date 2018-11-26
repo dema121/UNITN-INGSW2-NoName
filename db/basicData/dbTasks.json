@@ -1,0 +1,38 @@
+[
+    {
+        "id":1,
+        "examId":1,
+        "text":"Quale è la sigla di Volt?",
+        "description":"",
+        "type":"single",
+        "defaultAnswers":["A", "V", "W"],
+        "rightAnswers":1,
+        "peerReview":false,
+        "deadline":-1,
+        "reviewDeadline":-1
+    },
+    {
+        "id":2,
+        "examId":1,
+        "text":"Quale è la sigla di Ampere?",
+        "description":"",
+        "type":"single",
+        "defaultAnswers":["A", "V", "W"],
+        "rightAnswers":0,
+        "peerReview":false,
+        "deadline":-1,
+        "reviewDeadline":-1
+    },
+    {
+        "id":3,
+        "examId":1,
+        "text":"Quale è la sigla di Watt?",
+        "description":"",
+        "type":"single",
+        "defaultAnswers":["A", "V", "W"],
+        "rightAnswers":2,
+        "peerReview":false,
+        "deadline":-1,
+        "reviewDeadline":-1
+    }
+]
