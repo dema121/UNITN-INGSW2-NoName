@@ -5,7 +5,8 @@
         "name":"ADMIN",
         "surname":"ADMIN",
         "email":"a@a.com",
-        "password": "ASD"
+        "password": "ASD",
+        "accessToken": "fakeToken123"
     },
     {
         "id": 2,
@@ -13,7 +14,8 @@
         "name":"ASD",
         "surname":"DSA",
         "email":"b@a.com",
-        "password": "ASD"
+        "password": "ASD",
+        "accessToken": ""
     },
     {
         "id": 3,
@@ -21,7 +23,8 @@
         "name":"STUD",
         "surname":"DSA",
         "email":"c@a.com",
-        "password": "ASD"
+        "password": "ASD",
+        "accessToken": ""
     }
 
 ]
