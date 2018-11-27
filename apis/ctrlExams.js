@@ -45,6 +45,10 @@ const ctrlExamGET = function(req, res) {
     }
 
     let exam = db.DAOexams.findById(req.params.id);
+    if (!exam) {
+        res.status(404).json('Exam not found');
+        return;
+    }
     if (exam.createdBy != currentUser.id && !exam.teacherassistants.includes(currentUser.id) && !exam.members.includes(currentUser.id)) {
         res.status(403).json("Not authorized to view this item");
         return;
@@ -60,6 +64,10 @@ const ctrlExamPUT = function(req, res) {
     }
 
     let exam = db.DAOexams.findById(req.params.id);
+    if (!exam) {
+        res.status(404).json('Exam not found');
+        return;
+    }
     if (exam.createdBy != currentUser.id && !exam.teacherassistants.includes(currentUser.id)) {
         res.status(403).json("Not authorized to do this action");
         return;
@@ -91,6 +99,10 @@ const ctrlExamDELETE = function(req, res) {
     }
 
     let exam = db.DAOexams.findById(req.params.id);
+    if (!exam) {
+        res.status(404).json('Exam not found');
+        return;
+    }
     if (exam.createdBy != currentUser.id && !exam.teacherassistants.includes(currentUser.id)) {
         res.status(403).json("Not authorized to view this item");
         return;
