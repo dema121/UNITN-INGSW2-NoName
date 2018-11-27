@@ -52,6 +52,37 @@ const ctrlExamGET = function(req, res) {
     res.status(200).json(exam);
 };
 
+const ctrlExamPUT = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser) {
+        res.status(401).json('User not logged in');
+        return;
+    }
+
+    let exam = db.DAOexams.findById(req.params.id);
+    if (exam.createdBy != currentUser.id && !exam.teacherassistants.includes(currentUser.id)) {
+        res.status(403).json("Not authorized to do this action");
+        return;
+    }
+
+    if (req.body.name) {
+        exam.name = req.body.name;
+    }
+    if (req.body.description) {
+        exam.description = req.body.description;
+    }
+    if (req.body.deadline) {
+        exam.deadline = req.body.deadline;
+    }
+    if (req.body.taskNumbers) {
+        exam.taskNumbers = req.body.taskNumbers;
+    }
+
+    exam = db.DAOexams.update(exam);
+
+    res.status(200).json(exam);
+};
+
 
 function checkParamRequired(paramValue, paramName, response) {
     if (!paramValue) {
@@ -66,5 +97,6 @@ function checkParamRequired(paramValue, paramName, response) {
 module.exports = {
     ctrlExamsGET,
     ctrlExamsPOST,
-    ctrlExamGET
+    ctrlExamGET,
+    ctrlExamPUT
 };
