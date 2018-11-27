@@ -12,8 +12,39 @@ const ctrlExamsGET = function(req, res) {
 };
 
 const ctrlExamsPOST = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser) {
+        res.status(401).json('User not logged in');
+        return;
+    }
+    if (!checkParamRequired(req.body.name, "name", res)) return;
+    if (!checkParamRequired(req.body.taskNumbers, "taskNumbers", res)) return;
     
+    let newExam = {
+        name: req.body.name,
+        description: req.body.description,
+        createdBy: currentUser.id,
+        deadline: req.body.deadline,
+        taskNumbers: req.body.taskNumbers,
+        teacherassistants: [],
+        tasks: [],
+        members: [],
+        visible: false
+    }
+    
+    newExam = db.DAOexams.add(newExam);
+
+    res.status(201).json(newExam);
 };
+
+
+function checkParamRequired(paramValue, paramName, response) {
+    if (!paramValue) {
+        response.status(400).json(paramName + " is required");
+        return false;
+    }
+    return true;
+}
 
 
 
