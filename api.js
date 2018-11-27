@@ -27,6 +27,10 @@ app.post('/v1/users', controllers.users.ctrlUsersPOST);
 app.get('/v1/exams', controllers.exams.ctrlExamsGET);
 app.post('/v1/exams', controllers.exams.ctrlExamsPOST);
 
+app.get('/v1/exams/:id', controllers.exams.ctrlExamGET);
+app.put('/v1/exams/:id', controllers.exams.ctrlExamPUT);
+app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
+
 app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
 module.exports = {app};
