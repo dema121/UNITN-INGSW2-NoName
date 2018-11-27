@@ -51,6 +51,11 @@ const DAOexams = {
     },
     all() {
         return db.exams;
+    },
+    delete(exam) {
+        let originalExam = this.findById(exam.id);
+        let originalExamIndex = db.exams.indexOf(originalExam); 
+        db.exams.splice(originalExamIndex, 1);
     }
 };
 

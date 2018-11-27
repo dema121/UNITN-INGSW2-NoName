@@ -83,6 +83,22 @@ const ctrlExamPUT = function(req, res) {
     res.status(200).json(exam);
 };
 
+const ctrlExamDELETE = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser) {
+        res.status(401).json('User not logged in');
+        return;
+    }
+
+    let exam = db.DAOexams.findById(req.params.id);
+    if (exam.createdBy != currentUser.id && !exam.teacherassistants.includes(currentUser.id)) {
+        res.status(403).json("Not authorized to view this item");
+        return;
+    }
+    db.DAOexams.delete(exam);
+    res.status(200).json();
+};
+
 
 function checkParamRequired(paramValue, paramName, response) {
     if (!paramValue) {
@@ -98,5 +114,6 @@ module.exports = {
     ctrlExamsGET,
     ctrlExamsPOST,
     ctrlExamGET,
-    ctrlExamPUT
+    ctrlExamPUT,
+    ctrlExamDELETE
 };
