@@ -27,6 +27,9 @@ app.post('/v1/users', controllers.users.ctrlUsersPOST);
 app.get('/v1/exams', controllers.exams.ctrlExamsGET);
 app.post('/v1/exams', controllers.exams.ctrlExamsPOST);
 
+app.get('/v1/tasks', controllers.tasks.ctrlTasksGET);
+app.post('/v1/tasks', controllers.tasks.ctrlTasksPOST);
+
 app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
 module.exports = {app};

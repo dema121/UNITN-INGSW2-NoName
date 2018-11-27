@@ -48,7 +48,10 @@ const DAOexams = {
 };
 
 const DAOtasks = {
-    
+    findByExamId(examID) {
+        let tasks = db.tasks.filter(task => task.examId == examID);
+        return tasks;
+    }
 };
 
 const DAOsubmissions = {
