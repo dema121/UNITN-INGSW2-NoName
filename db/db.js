@@ -14,7 +14,9 @@ db.reviews = require("./basicData/dbReviews.json");
 
 const DAOusers = {
     add(user) {
-        
+        user.id = uuid();
+        db.users.push(user);
+        return user;
     },
     findByToken(token) {        
         return db.users.filter(user => user.accessToken == token)[0];
@@ -24,6 +26,21 @@ const DAOusers = {
     },
     all() {
         return db.users;
+    },
+    findByFilters(email, text){
+        let users ;
+        if (!email)
+        {
+            users =db.users;
+        } else 
+        {
+            users = db.users.filter(user => (user.email.indexOf(email)) >= 0 ) ;
+        }
+        if (text)
+        {
+            users = users.filter(user => (user.name.indexOf(text)) >= 0 || user.surname.indexOf(text) >= 0) ;
+        }
+        return users ;
     }
 };
 
