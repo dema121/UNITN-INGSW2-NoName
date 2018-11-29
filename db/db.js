@@ -22,6 +22,9 @@ const DAOusers = {
     findById(userId) {        
         return db.users.filter(user => user.id == userId)[0];
     },
+    findByIds(ids) {
+        return db.users.filter(user => ids.includes(user.id));
+    },
     all() {
         return db.users;
     }
