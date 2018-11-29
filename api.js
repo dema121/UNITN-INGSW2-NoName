@@ -34,6 +34,7 @@ app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
 app.get('/v1/teacherassistants', controllers.teacherassistans.ctrlTasGET);
 app.post('/v1/teacherassistants', controllers.teacherassistans.ctrlTasPOST);
+app.delete('/v1/teacherassistants/:id', controllers.teacherassistans.ctrlTaDELETE);
 
 app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 

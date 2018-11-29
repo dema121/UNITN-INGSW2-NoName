@@ -45,6 +45,37 @@ const ctrlTasPOST = function(req, res) {
     res.status(201).json(exam);
 };
 
+const ctrlTaDELETE = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser) {
+        res.status(401).json('User not logged in');
+        return;
+    }
+    if (!checkParamRequired(req.params.id, "taId", res)) return;
+    if (!checkParamRequired(req.query.examId, "examId", res)) return;
+
+    let exam = db.DAOexams.findById(req.query.examId);
+    if (!exam) {
+        res.status(404).json('Exam not found');
+        return;
+    }
+    let ta = db.DAOusers.findById(req.params.id);
+    if (!ta || !exam.teacherassistants.includes(ta.id)) {
+        res.status(404).json('Teacher assistant not found');
+        return;
+    }
+
+    if (exam.createdBy != currentUser.id && !exam.teacherassistants.includes(currentUser.id)) {
+        res.status(403).json("Not authorized to view this item");
+        return;
+    }
+
+    exam.teacherassistants.splice(exam.teacherassistants.indexOf(ta.id),1);
+    exam = db.DAOexams.update(exam);
+
+    res.status(200).json(exam);
+};
+
 
 function checkParamRequired(paramValue, paramName, response) {
     if (!paramValue) {
@@ -58,5 +89,6 @@ function checkParamRequired(paramValue, paramName, response) {
 
 module.exports = {
     ctrlTasGET,
-    ctrlTasPOST
+    ctrlTasPOST,
+    ctrlTaDELETE
 };
