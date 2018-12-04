@@ -1,5 +1,6 @@
 const db = require('../db/db.js');
 
+// /v1/submissions GET
 const ctrlSubmissionsGET = function(req, res) {
     let currentUser = db.DAOusers.findByToken(req.token);
     if (!currentUser) {
@@ -15,6 +16,7 @@ const ctrlSubmissionsGET = function(req, res) {
     res.status(200).json(submissions);
 };
 
+// /v1/submissions POST
 const ctrlSubmissionsPOST = function(req,res) {
     let currentUser = db.DAOusers.findByToken(req.token);
     if (!currentUser) {
@@ -43,6 +45,7 @@ const ctrlSubmissionsPOST = function(req,res) {
     res.status(201).json(newSubmission);
 };
 
+// /v1/submissions/subId GET
 const ctrlSubmissionGET = function(req,res) {
     let currentUser = db.DAOusers.findByToken(req.token);
     if (!currentUser) {
@@ -51,17 +54,56 @@ const ctrlSubmissionGET = function(req,res) {
     }
     //console.log(req.params);
     if (!req.params.id) {
-        res.status(400).json("id required")
+        res.status(400).json("id required");
+        return;
     }
     let submission=db.DAOsubmissions.findById(req.params.id);
+    if(!submission){
+        res.status(404).json('Submission not found');
+        return;
+    }
     
     //TODO: 403 response
     res.status(200).json(submission);
 }
 
+// /v1/submissions/subId/reviewer PUT
+const ctrlSubmissionPUT = function(req,res){
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if(!currentUser){
+        res.status(401).json('User not logged in');
+        return;
+    }
+    if (!req.params.id) {
+        res.status(400).json("id required");
+        return;
+    }
+    if(!req.body.userId){
+        res.status(400).json("subId required");
+        return;        
+    }
+    let submission=db.DAOsubmissions.findById(req.params.id);
+    if(!submission){
+        res.status(404).json('Submission not found');
+        return;
+    }
+    let user=db.DAOusers.findById(req.body.userId);
+    if(!user){
+        res.status(404).json('User not found');
+        return;
+    }
+    submission.peerReviewUserId=req.body.userId;
+
+    res.status(200).json(submission);
+}
+// /v1/submissions/subId/mark PUT
+// /v1/reviews GET
+// /v1/reviews POST
+
 
 module.exports = {
     ctrlSubmissionsGET,
     ctrlSubmissionsPOST,
-    ctrlSubmissionGET
+    ctrlSubmissionGET,
+    ctrlSubmissionPUT
 };

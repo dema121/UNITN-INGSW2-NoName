@@ -24,6 +24,19 @@ test('POST /submissions should return 401 without token', (done) => {
         });
 });
 
+test('GET /submissions/submissionId should return 401 without token', (done) => {
+    request(app)
+        .get('/v1/submissions/3')
+        .expect(401)
+        .end((err, res) => {
+            done(err);
+        });
+});
+
+/**
+ * TEST TASKID SENT
+ */
+
 test('GET /submissions should return 400 without taskId', (done) => {
     request(app)
         .get('/v1/submissions/')
@@ -43,6 +56,10 @@ test('POST /submissions should return 400 without taskId', (done) => {
             done(err);
         });
 });
+
+/**
+ * TEST WITHOUT ERRORS
+ */
 
 test('GET /submissions/ should return 200 with a taskId', (done) => {
     request(app)
@@ -65,23 +82,15 @@ test('GET /submissions/submissionId should return 200', (done) => {
         });
 });
 
-test('GET /submissions/submissionId should return 401 without token', (done) => {
-    request(app)
-        .get('/v1/submissions/3')
-        .expect(401)
-        .end((err, res) => {
-            done(err);
-        });
-});
 
-/*test('POST /taskId should return 201', (done) => {
+
+test('POST /taskId should return 201', (done) => {
     request(app)
-        .post('/v1/submissions')        
-        .body({ 'taskId': 1 })
-        .set('Authorization', 'Bearer ' + authTokenTest)
+        .post('/v1/submissions/')
+        .set('Authorization', 'Bearer ' + authTokenTest)        
+        .send({ 'taskId': 1 })
         .expect(201)
         .end((err, res) => {
             done(err);
         });
 });
-*/

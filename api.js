@@ -32,6 +32,7 @@ app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
 
 app.get('/v1/submissions/:id',controllers.submissions.ctrlSubmissionGET);
 
+app.put('/v1/submissions/:id/reviewer',controllers.submissions.ctrlSubmissionPUT);
 
 
 app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
