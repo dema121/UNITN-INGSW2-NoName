@@ -18,7 +18,8 @@ const controllers = {
    exams: require('./apis/ctrlExams.js'),
    tasks: require('./apis/ctrlTasks.js'),
    submissions: require('./apis/ctrlSubmissions.js'),
-   reviews: require('./apis/ctrlReviews.js')
+   reviews: require('./apis/ctrlReviews.js'),
+   profile: require('./apis/ctrlProfile.js')
 }
 
 app.get('/v1/users', controllers.users.ctrlUsersGET);
@@ -31,6 +32,7 @@ app.get('/v1/exams/:id', controllers.exams.ctrlExamGET);
 app.put('/v1/exams/:id', controllers.exams.ctrlExamPUT);
 app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
+app.get('/v1/profile',controllers.profile.ctrlProfileGET);
 let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
 module.exports = {
