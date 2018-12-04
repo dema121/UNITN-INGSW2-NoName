@@ -31,6 +31,14 @@ app.get('/v1/exams/:id', controllers.exams.ctrlExamGET);
 app.put('/v1/exams/:id', controllers.exams.ctrlExamPUT);
 app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
+
+app.get('/v1/submissions', controllers.submissions.ctrlSubmissionsGET);
+app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
+
+app.get('/v1/submissions/:id',controllers.submissions.ctrlSubmissionGET);
+
+app.put('/v1/submissions/:id/reviewer',controllers.submissions.ctrlSubmissionPUT);
+
 let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
 module.exports = {

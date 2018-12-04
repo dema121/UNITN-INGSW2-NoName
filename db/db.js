@@ -64,7 +64,21 @@ const DAOtasks = {
 };
 
 const DAOsubmissions = {
-
+    findById(submissionsId) {        
+        return db.submissions.filter(submission => submission.id == submissionsId)[0];
+    },
+    findSubmissions(taskId, userId){
+        let submissions = db.submissions.filter(submission => submission.taskId == taskId);
+        if(userId){
+            submissions = submissions.filter(submission=> submission.userId ==userId);
+        }
+        return submissions;
+    },
+    add(submission){
+        submission.id=uuid();
+        db.submissions.push(submission);
+        return submission;
+    }        
 };
 
 const DAOreviews = {
