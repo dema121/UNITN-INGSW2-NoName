@@ -18,7 +18,8 @@ const controllers = {
    exams: require('./apis/ctrlExams.js'),
    tasks: require('./apis/ctrlTasks.js'),
    submissions: require('./apis/ctrlSubmissions.js'),
-   reviews: require('./apis/ctrlReviews.js')
+   reviews: require('./apis/ctrlReviews.js'),
+   teacherassistans: require('./apis/ctrlTeacherassistants.js')
 }
 
 app.get('/v1/users', controllers.users.ctrlUsersGET);
@@ -38,6 +39,10 @@ app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
 app.get('/v1/submissions/:id',controllers.submissions.ctrlSubmissionGET);
 
 app.put('/v1/submissions/:id/reviewer',controllers.submissions.ctrlSubmissionPUT);
+
+app.get('/v1/teacherassistants', controllers.teacherassistans.ctrlTasGET);
+app.post('/v1/teacherassistants', controllers.teacherassistans.ctrlTasPOST);
+app.delete('/v1/teacherassistants/:id', controllers.teacherassistans.ctrlTaDELETE);
 
 let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
