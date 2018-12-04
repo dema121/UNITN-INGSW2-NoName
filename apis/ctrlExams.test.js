@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../api').app;
+const httpServer = require('../api').httpServer;
 
 const authTokenTest = "fakeToken123";
 
@@ -51,6 +52,13 @@ test('DELETE /exams/{id} should return 401 without token', (done) => {
 /**
  * Data
  */
+
+let getExamByIdRequest = function(id) {
+    return request(app)
+        .get('/v1/exams/' + id)
+        .set('Authorization', 'Bearer ' + authTokenTest);
+}
+
 test('GET /exams should return 200', (done) => {
     request(app)
         .get('/v1/exams/')
@@ -71,13 +79,16 @@ test('POST /exams should return 201', (done) => {
         .set('Authorization', 'Bearer ' + authTokenTest)
         .expect(201)
         .end((err, res) => {
-            done(err);
+            getExamByIdRequest(res.body.id)
+                .expect(200)
+                .end((err, res) => {
+                    //TODO: check obj equality
+                    done(err);
+                });
         });
 });
 test('GET /exams/{id} should return 200', (done) => {
-    request(app)
-        .get('/v1/exams/1')
-        .set('Authorization', 'Bearer ' + authTokenTest)
+    getExamByIdRequest("1")
         .expect(200)
         .end((err, res) => {
             done(err);
@@ -92,15 +103,29 @@ test('PUT /exams/{id} should return 200', (done) => {
         .set('Authorization', 'Bearer ' + authTokenTest)
         .expect(200)
         .end((err, res) => {
-            done(err);
+            getExamByIdRequest(res.body.id)
+                .expect(200)
+                .end((err, res) => {
+                    //TODO: check obj equality
+                    done(err);
+                });
         });
 });
 test('DELETE /exams/{id} should return 200', (done) => {
+    let examId = "1";
     request(app)
-        .get('/v1/exams/1')
+        .delete('/v1/exams/' + examId)
         .set('Authorization', 'Bearer ' + authTokenTest)
         .expect(200)
         .end((err, res) => {
-            done(err);
+            getExamByIdRequest(examId)
+                .expect(404)
+                .end((err, res) => {
+                    done(err);
+                });
         });
+});
+
+afterAll(function () {
+    httpServer.close();
 });

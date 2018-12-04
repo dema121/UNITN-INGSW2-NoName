@@ -36,6 +36,9 @@ app.get('/v1/teacherassistants', controllers.teacherassistans.ctrlTasGET);
 app.post('/v1/teacherassistants', controllers.teacherassistans.ctrlTasPOST);
 app.delete('/v1/teacherassistants/:id', controllers.teacherassistans.ctrlTaDELETE);
 
-app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
+let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
-module.exports = {app};
+module.exports = {
+   app,
+   httpServer
+};
