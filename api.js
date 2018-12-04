@@ -31,6 +31,9 @@ app.get('/v1/exams/:id', controllers.exams.ctrlExamGET);
 app.put('/v1/exams/:id', controllers.exams.ctrlExamPUT);
 app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
-app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
+let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
-module.exports = {app};
+module.exports = {
+   app,
+   httpServer
+};
