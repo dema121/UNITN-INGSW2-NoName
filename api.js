@@ -33,6 +33,7 @@ app.put('/v1/exams/:id', controllers.exams.ctrlExamPUT);
 app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
 app.get('/v1/profile',controllers.profile.ctrlProfileGET);
+app.post('/v1/profile',controllers.profile.ctrlProfileLoginPOST);
 let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
 module.exports = {

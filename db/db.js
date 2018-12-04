@@ -22,6 +22,9 @@ const DAOusers = {
     findById(userId) {        
         return db.users.filter(user => user.id == userId)[0];
     },
+    findByMailPassword(email,password){
+        return db.users.filter(user => user.email == email && user.password == password)[0];
+    },
     all() {
         return db.users;
     }
