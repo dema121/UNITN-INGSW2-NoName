@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../api').app;
+const httpServer = require('../api').httpServer;
 
 const authTokenTest = "fakeToken123";
 
@@ -93,4 +94,8 @@ test('POST /taskId should return 201', (done) => {
         .end((err, res) => {
             done(err);
         });
+});
+
+afterAll(function () {
+    httpServer.close();
 });

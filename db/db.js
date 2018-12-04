@@ -28,8 +28,16 @@ const DAOusers = {
 };
 
 const DAOexams = {    
-    add(user) {
-        
+    add(exam) {
+        exam.id = uuid();
+        db.exams.push(exam);
+        return exam;
+    },
+    update(exam) {
+        let originalExam = this.findById(exam.id);
+        let originalExamIndex = db.exams.indexOf(originalExam); 
+        db.exams[originalExamIndex] = exam;
+        return db.exams[originalExamIndex];
     },
     findById(examId) {        
         return db.exams.filter(exam => exam.id == examId)[0];
@@ -37,13 +45,17 @@ const DAOexams = {
     findByUserId(examId, text) {
         let exams = db.exams.filter(exam => exam.createdBy == examId || exam.teacherassistants.indexOf(userId) >= 0 || exam.members.indexOf(userId));
         if (text) {
-            //TODO: filter
-            //exams.filter(exam => exam.name == text)
+            exams = exams.filter(exam => exam.name.indexOf(text) >= 0)
         }
         return exams;
     },
     all() {
         return db.exams;
+    },
+    delete(exam) {
+        let originalExam = this.findById(exam.id);
+        let originalExamIndex = db.exams.indexOf(originalExam); 
+        db.exams.splice(originalExamIndex, 1);
     }
 };
 
