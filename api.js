@@ -34,7 +34,7 @@ app.put('/v1/exams/:id', controllers.exams.ctrlExamPUT);
 app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
 app.get('/v1/profile',controllers.profile.ctrlProfileGET);
-app.post('/v1/profile',controllers.profile.ctrlProfileLoginPOST);
+app.post('/v1/login',controllers.profile.ctrlProfileLoginPOST);
 
 app.get('/v1/submissions', controllers.submissions.ctrlSubmissionsGET);
 app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);

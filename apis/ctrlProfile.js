@@ -16,9 +16,14 @@ const ctrlProfileLoginPOST = function(req, res){
     if (!checkParamRequired(req.body.password, "password", res)) return;
     
     let user = db.DAOusers.findByMailPassword(req.body.email, req.body.password);
-    if(isEmpty(user, res)) return;
-    user.token = token();
-    res.status(200).json(currentUser);
+    if(!user) {
+        res.status(401).json('Inexistent User');
+        return;
+    }
+    user.accessToken = token();
+    db.DAOusers.updateUser(user);
+    user.password = undefined;
+    res.status(200).json(user);
 }
 
 var rand = function() {
@@ -34,14 +39,6 @@ function checkParamRequired(paramValue, paramName, response) {
         response.status(400).json(paramName + " is required");
         return false;
     }
-    return true;
-}
-function isEmpty(user, response) {
-    for(var key in user) {
-        if(user.hasOwnProperty(key))
-            return false;
-    }
-    response.status(401).json("inexistent user");
     return true;
 }
 
