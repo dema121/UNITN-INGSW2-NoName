@@ -32,7 +32,7 @@ test('POST /users should return 401 without token', (done) => {
 });
 let getUserByIdRequest = function(id) {
     return request(app)
-        .get('/v1/users/' + id)
+        .get('/v1/users/'+ id)
         .set('Authorization', 'Bearer ' + authTokenTest);
 }
 test('POST /users should return 201', (done) => {

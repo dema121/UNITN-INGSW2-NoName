@@ -15,10 +15,23 @@ const ctrlUsersGET = function(req, res) {
     {
         users = db.DAOusers.findByFilters(req.query.email, req.query.text);
     }
-   
-    
     res.status(200).json(users);
 };
+
+const ctrlUserGETbyId = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token) ;
+    if (!currentUser)
+    {
+        res.status(401).json("user not logged in");
+    }
+    let user;
+    user = db.DAOusers.findById(req.params.id);
+    if (!user){
+        res.status(404).json("user not found");
+    }
+    user.password = undefined;
+    res.status(200).json(user);
+}
 
 const ctrlUsersPOST = function(req, res) {
     if ((!req.body.username) || (!req.body.name) || (!req.body.surname) || (!req.body.email) || (!req.body.password))
@@ -41,5 +54,6 @@ const ctrlUsersPOST = function(req, res) {
 
 module.exports = {
     ctrlUsersGET,
-    ctrlUsersPOST
+    ctrlUsersPOST,
+    ctrlUserGETbyId
 };

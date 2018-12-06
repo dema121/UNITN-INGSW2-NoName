@@ -22,6 +22,7 @@ const controllers = {
 }
 
 app.get('/v1/users', controllers.users.ctrlUsersGET);
+app.get('/v1/users/:id', controllers.users.ctrlUserGETbyId);
 app.post('/v1/users', controllers.users.ctrlUsersPOST);
 
 app.get('/v1/exams', controllers.exams.ctrlExamsGET);
