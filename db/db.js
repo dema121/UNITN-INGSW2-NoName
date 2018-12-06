@@ -14,7 +14,9 @@ db.reviews = require("./basicData/dbReviews.json");
 
 const DAOusers = {
     add(user) {
-        
+        user.id = uuid();
+        db.users.push(user);
+        return user;
     },
     findByToken(token) {        
         return cloneObj(db.users.filter(user => user.accessToken == token)[0]);
@@ -25,8 +27,36 @@ const DAOusers = {
     findByIds(ids) {
         return cloneObj(db.users.filter(user => ids.includes(user.id)));
     },
+    delete(userId){
+        let user = this.findById(userId);
+        if (!user){
+            return false;
+        }
+        let index = db.users.findIndex(us => us.id == user.id);
+        db.users.splice(index, 1);
+        user = this.findById(userId);
+        if (!user){
+            return true;
+        }
+        return false ;
+    },
     all() {
         return cloneObj(db.users);
+    },
+    findByFilters(email, text){
+        let users ;
+        if (!email)
+        {
+            users = db.users;
+        } else 
+        {
+            users = db.users.filter(user => (user.email.indexOf(email)) >= 0 ) ;
+        }
+        if (text)
+        {
+            users = users.filter(user => (user.name.indexOf(text)) >= 0 || user.surname.indexOf(text) >= 0) ;
+        }
+        return cloneObj(users) ;
     }
 };
 
