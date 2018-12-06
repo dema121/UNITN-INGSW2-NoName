@@ -32,7 +32,7 @@ const DAOusers = {
         if (!user){
             return false;
         }
-        let index = db.users.indexOf(user);
+        let index = db.users.findIndex(us => us.id == user.id);
         db.users.splice(index, 1);
         user = this.findById(userId);
         if (!user){

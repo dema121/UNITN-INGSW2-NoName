@@ -83,3 +83,7 @@ test('DELETE /users/id should return 401 if the user has is no logged in', (done
             done(err);
         });
 });
+
+afterAll(function () {
+    httpServer.close();
+});
