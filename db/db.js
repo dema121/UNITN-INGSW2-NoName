@@ -24,6 +24,19 @@ const DAOusers = {
     findById(userId) {        
         return db.users.filter(user => user.id == userId)[0];
     },
+    delete(userId){
+        let user = this.findById(userId);
+        if (!user){
+            return false;
+        }
+        let index = db.users.indexOf(user);
+        db.users.splice(index, 1);
+        user = this.findById(userId);
+        if (!user){
+            return true;
+        }
+        return false ;
+    },
     all() {
         return db.users;
     },
@@ -31,7 +44,7 @@ const DAOusers = {
         let users ;
         if (!email)
         {
-            users =db.users;
+            users = db.users;
         } else 
         {
             users = db.users.filter(user => (user.email.indexOf(email)) >= 0 ) ;
