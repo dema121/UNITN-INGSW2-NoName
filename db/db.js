@@ -27,6 +27,14 @@ const DAOusers = {
     findByIds(ids) {
         return cloneObj(db.users.filter(user => ids.includes(user.id)));
     },
+    findByMailPassword(email,password){
+        return cloneObj(db.users.filter(user => user.email == email && user.password == password)[0]);
+    },
+    updateUser(user){
+        let originalUserIndex = db.users.findIndex(us => us.id == user.id); 
+        db.users[originalUserIndex] = cloneObj(user);
+        return cloneObj(db.users[originalUserIndex]);
+    },
     delete(userId){
         let user = this.findById(userId);
         if (!user){
