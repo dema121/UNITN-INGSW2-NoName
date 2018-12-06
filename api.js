@@ -18,7 +18,8 @@ const controllers = {
    exams: require('./apis/ctrlExams.js'),
    tasks: require('./apis/ctrlTasks.js'),
    submissions: require('./apis/ctrlSubmissions.js'),
-   reviews: require('./apis/ctrlReviews.js')
+   reviews: require('./apis/ctrlReviews.js'),
+   teacherassistans: require('./apis/ctrlTeacherassistants.js')
 }
 
 app.get('/v1/users', controllers.users.ctrlUsersGET);
@@ -29,6 +30,25 @@ app.delete('/v1/users/:id', controllers.users.ctrlUserDELETEbyId);
 app.get('/v1/exams', controllers.exams.ctrlExamsGET);
 app.post('/v1/exams', controllers.exams.ctrlExamsPOST);
 
-app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
+app.get('/v1/exams/:id', controllers.exams.ctrlExamGET);
+app.put('/v1/exams/:id', controllers.exams.ctrlExamPUT);
+app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
-module.exports = {app};
+
+app.get('/v1/submissions', controllers.submissions.ctrlSubmissionsGET);
+app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
+
+app.get('/v1/submissions/:id',controllers.submissions.ctrlSubmissionGET);
+
+app.put('/v1/submissions/:id/reviewer',controllers.submissions.ctrlSubmissionPUT);
+
+app.get('/v1/teacherassistants', controllers.teacherassistans.ctrlTasGET);
+app.post('/v1/teacherassistants', controllers.teacherassistans.ctrlTasPOST);
+app.delete('/v1/teacherassistants/:id', controllers.teacherassistans.ctrlTaDELETE);
+
+let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
+
+module.exports = {
+   app,
+   httpServer
+};
