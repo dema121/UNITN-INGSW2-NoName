@@ -17,7 +17,7 @@ const DAOusers = {
         
     },
     findByToken(token) {        
-        return db.users.filter(user => user.accessToken == token)[0];
+        return cloneObj(db.users.filter(user => user.accessToken == token)[0]);
     },
     findById(userId) {        
         return cloneObj(db.users.filter(user => user.id == userId)[0]);
