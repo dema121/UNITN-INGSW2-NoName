@@ -10,8 +10,14 @@ const ctrlTasksGET = function(req, res) {
     //parametri richiesti
     if(!checkParamRequired(req.query.examId, "exam id", res)) return;
 
-    //prendo le tasks e le restituisco
     //TODO: controllare se examID esiste nel db
+    let exam = db.DAOexams.findById(req.query.examId);
+    if( !exam ) {
+        res.status(404).json("Exam doesn't exist");
+        return;
+    }
+
+    //prendo le tasks e le restituisco
     let tasks = db.DAOtasks.findByExamId(req.query.examId);
     res.status(200).json(tasks);
 };
@@ -47,6 +53,30 @@ const ctrlTasksPOST = function(req, res) {
     res.status(201).json(newExam);
 };
 
+const ctrlTaskGET = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser) {
+        res.status(401).json('User not logged in');
+        return;
+    }
+}
+
+const ctrlTaskPUT = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser) {
+        res.status(401).json('User not logged in');
+        return;
+    }
+}
+
+const ctrlTaskDELETE = function(req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser) {
+        res.status(401).json('User not logged in');
+        return;
+    }
+}
+
 
 function checkParamRequired(paramValue, paramName, response) {
     if (!paramValue) {
@@ -62,5 +92,8 @@ function checkParamRequired(paramValue, paramName, response) {
 
 module.exports = {
     ctrlTasksGET,
-    ctrlTasksPOST
+    ctrlTasksPOST,
+    ctrlTaskGET,
+    ctrlTaskPUT,
+    ctrlTaskDELETE
 };

@@ -29,6 +29,9 @@ app.post('/v1/exams', controllers.exams.ctrlExamsPOST);
 
 app.get('/v1/tasks', controllers.tasks.ctrlTasksGET);
 app.post('/v1/tasks', controllers.tasks.ctrlTasksPOST);
+app.get('/v1/tasks/:taskID', controllers.tasks.ctrlTaskGET);
+app.put('/v1/tasks/:taskID', controllers.tasks.ctrlTaskPUT);
+app.delete('/v1/tasks/:taskID', controllers.tasks.ctrlTaskDELETE);
 
 app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
