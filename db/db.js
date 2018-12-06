@@ -62,7 +62,9 @@ const DAOexams = {
 };
 
 const DAOtasks = {
-    
+    findById(taskId) {        
+        return cloneObj(db.tasks.filter(task => task.id == taskId)[0]);
+    }
 };
 
 const DAOsubmissions = {

@@ -11,8 +11,12 @@ const ctrlSubmissionsGET = function(req, res) {
         res.status(400).json("taskId required");
         return;
     }
-    //TODO: 403 response
-    let submissions=db.DAOsubmissions.findSubmissions(req.query.taskId,req.query.userId);
+    //TODO: 403 response (not authorized to do this action)
+    let submissions=db.DAOsubmissions.findSubmissions(req.query.taskId,req.query.userId);    
+    if(submissions.length==0){
+        res.status(404).json('Submission not found');
+        return;
+    }
     res.status(200).json(submissions);
 };
 
@@ -32,7 +36,8 @@ const ctrlSubmissionsPOST = function(req,res) {
         res.status(403).json("Not authorized to do this action, deadline reached or user not assigned to the current exam/task");
     }
     */
-    //TODO: 403 response
+    //TODO: 403 response    
+
     let newSubmission={
         taskId:req.body.taskId,
         userId:currentUser.id,
@@ -68,7 +73,7 @@ const ctrlSubmissionGET = function(req,res) {
 }
 
 // /v1/submissions/subId/reviewer PUT
-const ctrlSubmissionPUT = function(req,res){
+const ctrlSubmissionReviewerPUT = function(req,res){
     let currentUser = db.DAOusers.findByToken(req.token);
     if(!currentUser){
         res.status(401).json('User not logged in');
@@ -92,18 +97,47 @@ const ctrlSubmissionPUT = function(req,res){
         res.status(404).json('User not found');
         return;
     }
+
+    let task=db.DAOtasks.findById(submission.taskId);
+    let exam=db.DAOexams.findById(task.examId);
+    let newUser = exam.teacherassistants.filter(newUser => exam.teacherassistants == currentUser.id)[0]; 
+    //let newUser = db.DAOexams.findTeacherAssistant(currentUser.id);
+    if(!newUser){
+        res.status(403).json("Not authorized to do this action, deadline reached or user not assigned to the current exam/task");
+        return;
+    }
+    
     submission.peerReviewUserId=req.body.userId;
 
     res.status(200).json(submission);
 }
 // /v1/submissions/subId/mark PUT
-// /v1/reviews GET
-// /v1/reviews POST
-
+const ctrlSubmissionMarkPUT = function(req,res){
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if(!currentUser){
+        res.status(401).json('User not logged in');
+        return;
+    }
+    if(!req.body.subId){
+        res.status(400).json("subId required");
+        return;        
+    }
+    if(!req.body.mark){
+        res.status(400).json("mark required");
+        return;        
+    }
+    let submission=db.DAOsubmissions.findById(req.params.id);
+    if(!submission){
+        res.status(404).json('Submission not found');
+        return;
+    }
+    //submission.mark
+}
 
 module.exports = {
     ctrlSubmissionsGET,
     ctrlSubmissionsPOST,
     ctrlSubmissionGET,
-    ctrlSubmissionPUT
+    ctrlSubmissionReviewerPUT,
+    ctrlSubmissionMarkPUT
 };
