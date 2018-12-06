@@ -42,6 +42,7 @@ test('GET /tasks should return 200 with token', (done) => {
 // TODO: TEST WITH LOGIN & EXAMID INESISTENTE
 
 //Test inserimento task con tutti i campi e il token
+/*
 test('POST /tasks should return 201 with all the fields & the token', (done) => {
     request(app)
         .post('/v1/tasks/')
@@ -60,3 +61,4 @@ test('POST /tasks should return 201 with all the fields & the token', (done) => 
             done(err);
         });
 });
+*/
