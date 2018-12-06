@@ -19,7 +19,8 @@ const controllers = {
    tasks: require('./apis/ctrlTasks.js'),
    submissions: require('./apis/ctrlSubmissions.js'),
    reviews: require('./apis/ctrlReviews.js'),
-   profile: require('./apis/ctrlProfile.js')
+   profile: require('./apis/ctrlProfile.js'),
+   teacherassistans: require('./apis/ctrlTeacherassistants.js')
 }
 
 app.get('/v1/users', controllers.users.ctrlUsersGET);
@@ -34,6 +35,18 @@ app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
 app.get('/v1/profile',controllers.profile.ctrlProfileGET);
 app.post('/v1/profile',controllers.profile.ctrlProfileLoginPOST);
+
+app.get('/v1/submissions', controllers.submissions.ctrlSubmissionsGET);
+app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
+
+app.get('/v1/submissions/:id',controllers.submissions.ctrlSubmissionGET);
+
+app.put('/v1/submissions/:id/reviewer',controllers.submissions.ctrlSubmissionPUT);
+
+app.get('/v1/teacherassistants', controllers.teacherassistans.ctrlTasGET);
+app.post('/v1/teacherassistants', controllers.teacherassistans.ctrlTasPOST);
+app.delete('/v1/teacherassistants/:id', controllers.teacherassistans.ctrlTaDELETE);
+
 let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
 
 module.exports = {
