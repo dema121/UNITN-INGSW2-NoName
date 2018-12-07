@@ -27,6 +27,7 @@ app.get('/v1/users', controllers.users.ctrlUsersGET);
 app.get('/v1/users/:id', controllers.users.ctrlUserGETbyId);
 app.post('/v1/users', controllers.users.ctrlUsersPOST);
 app.delete('/v1/users/:id', controllers.users.ctrlUserDELETEbyId);
+app.put('/v1/users/:id', controllers.users.ctrlUserPUT);
 
 app.get('/v1/exams', controllers.exams.ctrlExamsGET);
 app.post('/v1/exams', controllers.exams.ctrlExamsPOST);
