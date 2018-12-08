@@ -118,8 +118,7 @@ const DAOexams = {
         return cloneObj(exam);
     },
     update(exam) {
-        let originalExam = this.findById(exam.id);
-        let originalExamIndex = db.exams.indexOf(originalExam); 
+        let originalExamIndex = db.exams.findIndex(ex => ex.id == exam.id); 
         db.exams[originalExamIndex] = exam;
         return cloneObj(db.exams[originalExamIndex]);
     },
