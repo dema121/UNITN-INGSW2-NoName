@@ -178,7 +178,7 @@ const DAOreviews = {
 
 function cloneObj(obj) {
     if (!obj) return undefined;
-    return Object.assign({}, obj);
+    return JSON.parse(JSON.stringify(obj));
 }
 
 
