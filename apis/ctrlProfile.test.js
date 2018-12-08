@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../api').app;
-const httpServer = require('../api').httpServer;
 
 const authTokenTest = "fakeToken123";
 
@@ -52,7 +51,3 @@ function isUser(obj) {
     return obj instanceof Object && !(obj instanceof Array)
         && obj.id && obj.email;
 }
-
-afterAll(function () {
-    httpServer.close();
-});
