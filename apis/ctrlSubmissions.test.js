@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../api').app;
-const httpServer = require('../api').httpServer;
 
 const authTokenTest = "fakeToken123";
 
@@ -106,6 +105,20 @@ test('GET /submissions/submissionId should return 200', (done) => {
 });
 
 
+<<<<<<< HEAD
 afterAll(function () {
     httpServer.close();
 });
+=======
+
+test('POST /taskId should return 201', (done) => {
+    request(app)
+        .post('/v1/submissions/')
+        .set('Authorization', 'Bearer ' + authTokenTest)        
+        .send({ 'taskId': 1 })
+        .expect(201)
+        .end((err, res) => {
+            done(err);
+        });
+});
+>>>>>>> origin/develop

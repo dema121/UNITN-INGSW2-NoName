@@ -31,6 +31,10 @@ const ctrlTasPOST = function(req, res) {
         res.status(404).json('Exam not found');
         return;
     }
+    if (exam.createdBy != currentUser.id) {
+        res.status(403).json("Not authorized to view this item");
+        return;
+    }
     let user = db.DAOusers.findById(req.body.userId);
     if (!user) {
         res.status(404).json('User not found');
@@ -42,7 +46,7 @@ const ctrlTasPOST = function(req, res) {
     }
     exam = db.DAOexams.update(exam);
 
-    res.status(201).json(exam);
+    res.status(201).json(user);
 };
 
 const ctrlTaDELETE = function(req, res) {

@@ -10,5 +10,17 @@
         "tasks":[1,2,3],
         "members":[3],
         "visible":true
+    },
+    {
+        "id":2,
+        "name":"Esame 2",
+        "description":"Descrizione esame2",
+        "createdBy":2,
+        "deadline":1545778800,
+        "taskNumbers":20,
+        "teacherassistants":[3],
+        "tasks":[1,2,3],
+        "members":[],
+        "visible":true
     }    
 ]
