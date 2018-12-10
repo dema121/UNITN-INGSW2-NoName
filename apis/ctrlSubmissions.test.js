@@ -105,11 +105,6 @@ test('GET /submissions/submissionId should return 200', (done) => {
 });
 
 
-<<<<<<< HEAD
-afterAll(function () {
-    httpServer.close();
-});
-=======
 
 test('POST /taskId should return 201', (done) => {
     request(app)
@@ -121,4 +116,3 @@ test('POST /taskId should return 201', (done) => {
             done(err);
         });
 });
->>>>>>> origin/develop

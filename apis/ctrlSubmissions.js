@@ -31,12 +31,28 @@ const ctrlSubmissionsPOST = function(req,res) {
         res.status(400).json("taskId required");
         return;
     }
-    /*TODO
-    if(!db.DAOsubmissions.findTask(req.body.taskId)){
-        res.status(403).json("Not authorized to do this action, deadline reached or user not assigned to the current exam/task");
+    //TODO: 403 response not authorized to do this action
+    
+    let task=db.DAOtasks.findByExamId(req.body.taskId);
+    if(!task){
+        res.status(404).json("task not found");
+        return;
+    }
+    let exam=db.DAOexams.findById(task.examId);
+    //403 User not assigned to the current exam/task
+    /*
+    let newUser = (exam.members.filter(newUser => exam.members == currentUser.id)[0]);
+    if(!newUser){
+        res.status(403).json("User not assigned to the current exam/task");
+        return;
     }
     */
-    //TODO: 403 response    
+
+    //TODO:403 deadline reached
+    /*if(exam.deadline<Date.now()/1000 | 0){
+        res.status(403).json("Deadline reached");
+        return;
+    }*/
 
     let newSubmission={
         taskId:req.body.taskId,
@@ -97,15 +113,14 @@ const ctrlSubmissionReviewerPUT = function(req,res){
         res.status(404).json('User not found');
         return;
     }
-
-    let task=db.DAOtasks.findById(submission.taskId);
+    //TODO: 403 response
+    /*let task=db.DAOtasks.findByExamId(submission.taskId);
     let exam=db.DAOexams.findById(task.examId);
-    let newUser = exam.teacherassistants.filter(newUser => exam.teacherassistants == currentUser.id)[0]; 
-    //let newUser = db.DAOexams.findTeacherAssistant(currentUser.id);
-    if(!newUser){
-        res.status(403).json("Not authorized to do this action, deadline reached or user not assigned to the current exam/task");
+    let newUser = exam.teacherassistants.filter(exam => exam.teacherassistants == currentUser.id)[0]; 
+    if((!newUser)&&(currentUser.id!=exam.createdBy)){
+        res.status(403).json("Not authorized to do this action");
         return;
-    }
+    }*/
     
     submission.peerReviewUserId=req.body.userId;
 
@@ -131,7 +146,12 @@ const ctrlSubmissionMarkPUT = function(req,res){
         res.status(404).json('Submission not found');
         return;
     }
-    //submission.mark
+    if((req.body.mark<0)||(req.body.mark>31)){
+        res.status(400).json('Bad request - mark cannot be applied');
+        return;
+    }
+    submission.mark=req.body.mark;
+    res.status(200).json(submission);
 }
 
 module.exports = {

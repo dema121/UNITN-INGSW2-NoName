@@ -46,10 +46,9 @@ app.post('/v1/login',controllers.profile.ctrlProfileLoginPOST);
 
 app.get('/v1/submissions', controllers.submissions.ctrlSubmissionsGET);
 app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
-
 app.get('/v1/submissions/:id',controllers.submissions.ctrlSubmissionGET);
-
 app.put('/v1/submissions/:id/reviewer',controllers.submissions.ctrlSubmissionReviewerPUT);
+app.put('/v1/submissions/:id/mark',controllers.submissions.ctrlSubmissionMarkPUT);
 
 app.get('/v1/teacherassistants', controllers.teacherassistans.ctrlTasGET);
 app.post('/v1/teacherassistants', controllers.teacherassistans.ctrlTasPOST);
