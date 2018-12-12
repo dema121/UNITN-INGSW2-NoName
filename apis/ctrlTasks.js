@@ -37,7 +37,6 @@ const ctrlTasksPOST = function(req, res) {
 
     //parametri richiesti
     if(!checkParamRequired(req.body.examId, "exam id", res)) return;
-    if
     if(!checkParamRequired(req.body.text, "text", res)) return;
     if(!checkParamRequired(req.body.type, "type", res)) return;
     if(!checkParamRequired(req.body.peerReview, "peer review", res)) return;
@@ -87,7 +86,7 @@ const ctrlTaskPUT = function(req, res) {
         res.status(401).json('User not logged in');
         return;
     }
-
+    
 
 }
 
