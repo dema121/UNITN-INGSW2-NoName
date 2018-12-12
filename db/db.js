@@ -106,8 +106,12 @@ const DAOtasks = {
         return task;
     },
     findByExamId(examID) {
-        let tasks = db.tasks.filter(task => task.examId == examID);
+        let tasks = cloneObj(db.tasks.filter(task => task.examId == examID));
         return tasks;
+    },
+    findById(ID) {
+        let task = cloneObj(db.tasks.filter(task => task.id == ID)[0]);
+        return task;
     }
 };
 

@@ -36,9 +36,9 @@ app.delete('/v1/exams/:id', controllers.exams.ctrlExamDELETE);
 
 app.get('/v1/tasks', controllers.tasks.ctrlTasksGET);
 app.post('/v1/tasks', controllers.tasks.ctrlTasksPOST);
-app.get('/v1/tasks/:taskID', controllers.tasks.ctrlTaskGET);
-app.put('/v1/tasks/:taskID', controllers.tasks.ctrlTaskPUT);
-app.delete('/v1/tasks/:taskID', controllers.tasks.ctrlTaskDELETE);
+app.get('/v1/tasks/:taskId', controllers.tasks.ctrlTaskGET);
+app.put('/v1/tasks/:taskId', controllers.tasks.ctrlTaskPUT);
+app.delete('/v1/tasks/:taskId', controllers.tasks.ctrlTaskDELETE);
 
 app.get('/v1/profile',controllers.profile.ctrlProfileGET);
 app.post('/v1/login',controllers.profile.ctrlProfileLoginPOST);
