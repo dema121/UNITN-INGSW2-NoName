@@ -43,6 +43,7 @@ app.delete('/v1/tasks/:taskID', controllers.tasks.ctrlTaskDELETE);
 
 app.get('/v1/profile',controllers.profile.ctrlProfileGET);
 app.post('/v1/login',controllers.profile.ctrlProfileLoginPOST);
+app.post('/v1/logout',controllers.profile.ctrlProfileLogoutPOST);
 
 app.get('/v1/submissions', controllers.submissions.ctrlSubmissionsGET);
 app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
