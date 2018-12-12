@@ -118,6 +118,23 @@ test('POST /tasks should return 400 with not all the necessary fields and with t
             done(err);
         });
 });
+//Test inserendo un esame inesistente
+test('POST /tasks should return 404 with all the necessary fields and with the token but without not existing exam Id', (done) => {
+    let obj = {
+        examId: -1,
+        text: 'aa',
+        type: 'single',
+        peerReview: 'false'
+    }
+    request(app)
+        .post('/v1/tasks/')
+        .set('Authorization', 'Bearer ' + authTokenTest)
+        .send(obj)
+        .expect(404)
+        .end((err, res) => {
+            done(err);
+        });
+});
 
 
 
@@ -145,4 +162,80 @@ test('GET /tasks/id should return 404 with token and not existing id', (done) =>
 
 
 
-
+//TEST TASKS/ID PUT
+//Test aggiornamento task con tutti i campi, id ed esame esistente
+test('PUT /tasks should return 200 with all the fields and existing exam', (done) => {
+    let obj = {
+        examId: 1,
+        text: 'aa',
+        description: 'aaa',
+        type: 'single',
+        defaultAnswers: ['a', 'b'],
+        rightAnswers: 'a',
+        peerReview: 'false',
+        deadline: -1,
+        reviewDeadline: -1
+    }
+    request(app)
+        .put('/v1/tasks/1')
+        .set('Authorization', 'Bearer ' + authTokenTest)
+        .send(obj)
+        .expect(200)
+        .end((err, res) => {
+            done(err);
+        });
+});
+//Test aggiornamento task con tutti i campi, id esistente ed esame inesistente
+test('PUT /tasks should return 404 with all the fields, existing taskId and not existing exam', (done) => {
+    let obj = {
+        examId: -1,
+        text: 'aa',
+        description: 'aaa',
+        type: 'single',
+        defaultAnswers: ['a', 'b'],
+        rightAnswers: 'a',
+        peerReview: 'false',
+        deadline: -1,
+        reviewDeadline: -1
+    }
+    request(app)
+        .put('/v1/tasks/1')
+        .set('Authorization', 'Bearer ' + authTokenTest)
+        .send(obj)
+        .expect(404)
+        .end((err, res) => {
+            done(err);
+        });
+});
+//Test aggiornamento task con tutti i campi, id inesistente
+test('PUT /tasks should return 404 with all the fields and not existing taskId', (done) => {
+    let obj = {
+        examId: -1,
+        text: 'aa',
+        description: 'aaa',
+        type: 'single',
+        defaultAnswers: ['a', 'b'],
+        rightAnswers: 'a',
+        peerReview: 'false',
+        deadline: -1,
+        reviewDeadline: -1
+    }
+    request(app)
+        .put('/v1/tasks/-1')
+        .set('Authorization', 'Bearer ' + authTokenTest)
+        .send(obj)
+        .expect(404)
+        .end((err, res) => {
+            done(err);
+        });
+});
+//Test aggiornamento task senza campi, id esistente
+test('PUT /tasks should return 200 without fields and existing taskId', (done) => {
+    request(app)
+        .put('/v1/tasks/1')
+        .set('Authorization', 'Bearer ' + authTokenTest)
+        .expect(200)
+        .end((err, res) => {
+            done(err);
+        });
+});

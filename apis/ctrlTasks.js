@@ -41,6 +41,13 @@ const ctrlTasksPOST = function(req, res) {
     if(!checkParamRequired(req.body.type, "type", res)) return;
     if(!checkParamRequired(req.body.peerReview, "peer review", res)) return;
 
+    //controllo che l'esame esista
+    let exam = db.DAOexams.findById(req.body.examId);
+    if( !exam ) {
+        res.status(404).json("Exam not found");
+        return;
+    }
+
     //creo la nuova task
     let newTask = {
         "examId":req.body.examId,
@@ -87,7 +94,52 @@ const ctrlTaskPUT = function(req, res) {
         return;
     }
     
+    //se la task non esiste mando l'errore
+    let task = db.DAOtasks.findById(req.params.taskId);
+    if( !task ) {
+        res.status(404).json("Task not found");
+        return;
+    }
+    
+    //TODO: controllo se l'utente è TA o proprietario
 
+    if(req.body.examId) {
+        //controllo che il nuovo esame esista
+        let exam = db.DAOexams.findById(req.body.examId);
+        if( !exam ) {
+            res.status(404).json("Exam not found");
+            return;
+        } else {
+            task.examId = req.body.exam;
+        }
+    }
+    if(req.body.text) {
+        task.text = req.body.text;
+    }
+    if(req.body.description) {
+        task.description = req.body.description;
+    }
+    if(req.body.type) {
+        task.type = req.body.type;
+    }
+    if(req.body.defaultAnswers) {
+        task.defaultAnswers = req.body.defaultAnswers;
+    }
+    if(req.body.rightAnswers) {
+        task.rightAnswers = req.body.rightAnswers;
+    }
+    if(req.body.peerReview) {
+        task.peerReview = req.body.peerReview;
+    }
+    if(req.body.deadline) {
+        task.deadline = req.body.deadline;
+    }
+    if(req.body.reviewDeadline) {
+        task.reviewDeadline = req.body.reviewDeadline;
+    }
+
+    //se va tutto bene mando la task
+    res.status(200).json(task);
 }
 
 
