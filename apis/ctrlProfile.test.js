@@ -60,27 +60,21 @@ test('POST /login should return 401 without right credential', (done) => {
             done(err);
         });
 });
-
-test('POST /logout should return 200 with the right token', (done) => {
-    let token = {
-        accessToken: 'fakeToken123'
-    }    
+/*
+test('POST /logout should return 200 with the right token', (done) => {   
     request(app)
         .post('/v1/logout/')
-        .send(token)
+        .set('Authorization', 'Bearer ' + authTokenTest)
         .expect(200)
         .end((err, res) => {
             done(err);
         });
-});
+});*/
 
-test('POST /logout should return 401 with the wrong token', (done) => {
-    let token = {
-        accessToken: 'fakeToken1234'
-    }    
+test('POST /logout should return 401 with the wrong token', (done) => {   
     request(app)
         .post('/v1/logout/')
-        .send(token)
+        .set('Authorization', 'Bearer asdasdasd')
         .expect(401)
         .end((err, res) => {
             done(err);

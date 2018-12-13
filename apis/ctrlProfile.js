@@ -27,9 +27,9 @@ const ctrlProfileLoginPOST = function(req, res){
 }
 
 const ctrlProfileLogoutPOST = function(req, res){
-    let user = db.DAOusers.findByToken(req.body.accessToken);
+    let user = db.DAOusers.findByToken(req.token);
     if(!user){
-        res.status(401).json('user logout unsuccessfully, bad token');
+        res.status(401).json('User not logged in');
         return;
     }
     user.accessToken = undefined;
