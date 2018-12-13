@@ -18,11 +18,54 @@ const DAOusers = {
         db.users.push(user);
         return user;
     },
+    changeUsername(newUsername, userId){
+        let user = this.findByIdNoClone(userId);
+        if (!user){
+            return false;
+        }
+        user.username = newUsername;
+        return true;
+    },
+    changeName(newName, userId){
+        let user = this.findByIdNoClone(userId);
+        if (!user){
+            return false;
+        }
+        user.name = newName;
+        return true;
+    },
+    changeSurname(newSurname, userId){
+        let user = this.findByIdNoClone(userId);
+        if (!user){
+            return false;
+        }
+        user.surname = newSurname;
+        return true;
+    },
+    changeEmail(newEmail, userId){
+        let user = this.findByIdNoClone(userId);
+        if (!user){
+            return false;
+        }
+        user.email = newEmail;
+        return true;
+    },
+    changePassword(newPassword, userId){
+        let user = this.findByIdNoClone(userId);
+        if (!user){
+            return false;
+        }
+        user.password = newPassword;
+        return true;
+    },
     findByToken(token) {        
         return cloneObj(db.users.filter(user => user.accessToken == token)[0]);
     },
     findById(userId) {        
         return cloneObj(db.users.filter(user => user.id == userId)[0]);
+    },
+    findByIdNoClone(userId) {        
+        return (db.users.filter(user => user.id == userId)[0]);
     },
     findByIds(ids) {
         return cloneObj(db.users.filter(user => ids.includes(user.id)));
@@ -75,8 +118,7 @@ const DAOexams = {
         return cloneObj(exam);
     },
     update(exam) {
-        let originalExam = this.findById(exam.id);
-        let originalExamIndex = db.exams.indexOf(originalExam); 
+        let originalExamIndex = db.exams.findIndex(ex => ex.id == exam.id); 
         db.exams[originalExamIndex] = exam;
         return cloneObj(db.exams[originalExamIndex]);
     },
@@ -139,7 +181,7 @@ const DAOreviews = {
 
 function cloneObj(obj) {
     if (!obj) return undefined;
-    return Object.assign({}, obj);
+    return JSON.parse(JSON.stringify(obj));
 }
 
 

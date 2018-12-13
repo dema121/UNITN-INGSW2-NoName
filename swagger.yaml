@@ -13,11 +13,14 @@ schemes:
 consumes:
 - application/json
 produces:
-- application/json
+- application/json 
+security:
+  - bearerAuth: []         
 paths:
   /v1/login:
     x-summary: Login
     post:
+      security: []
       summary: Send login data
       parameters:
         - name: user
@@ -712,6 +715,9 @@ definitions:
       password:
         type: string
         description: 'User password'
+      accessToken:
+        type: string
+        description: 'Token for authentication'
   Exam:
     type: object
     required:

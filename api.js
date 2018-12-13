@@ -27,6 +27,7 @@ app.get('/v1/users', controllers.users.ctrlUsersGET);
 app.get('/v1/users/:id', controllers.users.ctrlUserGETbyId);
 app.post('/v1/users', controllers.users.ctrlUsersPOST);
 app.delete('/v1/users/:id', controllers.users.ctrlUserDELETEbyId);
+app.put('/v1/users/:id', controllers.users.ctrlUserPUT);
 
 app.get('/v1/exams', controllers.exams.ctrlExamsGET);
 app.post('/v1/exams', controllers.exams.ctrlExamsPOST);
@@ -42,6 +43,7 @@ app.delete('/v1/tasks/:taskId', controllers.tasks.ctrlTaskDELETE);
 
 app.get('/v1/profile',controllers.profile.ctrlProfileGET);
 app.post('/v1/login',controllers.profile.ctrlProfileLoginPOST);
+app.post('/v1/logout',controllers.profile.ctrlProfileLogoutPOST);
 
 app.get('/v1/submissions', controllers.submissions.ctrlSubmissionsGET);
 app.post('/v1/submissions', controllers.submissions.ctrlSubmissionsPOST);
@@ -54,9 +56,10 @@ app.get('/v1/teacherassistants', controllers.teacherassistans.ctrlTasGET);
 app.post('/v1/teacherassistants', controllers.teacherassistans.ctrlTasPOST);
 app.delete('/v1/teacherassistants/:id', controllers.teacherassistans.ctrlTaDELETE);
 
-let httpServer = app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
+if (process.env.NODE_ENV !== 'test') {
+   app.listen(PORT, () => console.log('Example app listening on port:'+ PORT))
+}
 
 module.exports = {
-   app,
-   httpServer
+   app
 };

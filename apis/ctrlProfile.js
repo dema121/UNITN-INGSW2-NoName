@@ -26,6 +26,17 @@ const ctrlProfileLoginPOST = function(req, res){
     res.status(200).json(user);
 }
 
+const ctrlProfileLogoutPOST = function(req, res){
+    let user = db.DAOusers.findByToken(req.token);
+    if(!user){
+        res.status(401).json('User not logged in');
+        return;
+    }
+    user.accessToken = undefined;
+    db.DAOusers.updateUser(user);
+    res.status(200).json('user logout successfully');
+}
+
 var rand = function() {
     return Math.random().toString(36).substr(2);
 };
@@ -44,5 +55,6 @@ function checkParamRequired(paramValue, paramName, response) {
 
 module.exports = {
     ctrlProfileGET,
-    ctrlProfileLoginPOST
+    ctrlProfileLoginPOST,
+    ctrlProfileLogoutPOST
 };

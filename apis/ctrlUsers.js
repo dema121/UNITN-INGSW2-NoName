@@ -84,11 +84,52 @@ const ctrlUserDELETEbyId = function(req, res) {
     return;
 }
 
+const ctrlUserPUT = function (req, res) {
+    let currentUser = db.DAOusers.findByToken(req.token);
+    if (!currentUser)
+    {
+        res.status(401).json("user not logged in");
+        return;
+    }
+    let user;
+    user = db.DAOusers.findById(req.params.id);
+    if (!user){
+        res.status(404).json("user not found");
+        return;
+    }
+    if (currentUser.id != user.id)
+    {
+        res.status(403).json("not authorized to do this action");
+        return;
+    }
+    let state = true;
+    if (req.body.username) {
+        state = db.DAOusers.changeUsername(req.body.username, user.id);
+    }
+    if (req.body.name) {
+        state = db.DAOusers.changeName(req.body.name, user.id);
+    }
+    if (req.body.surname) {
+        state = db.DAOusers.changeSurname(req.body.surname, user.id);
+    }
+    if (req.body.email) {
+        state = db.DAOusers.changeEmail(req.body.email, user.id);
+    }
+    if (req.body.password) {
+        state = db.DAOusers.changeName(req.body.password, user.id);
+    }
+    if (state) {
+        res.status(200).json("Succesfull update");
+    }
+    res.status(500).json("Internal error");
+}
+
 
 
 module.exports = {
     ctrlUsersGET,
     ctrlUsersPOST,
     ctrlUserGETbyId,
-    ctrlUserDELETEbyId
+    ctrlUserDELETEbyId,
+    ctrlUserPUT
 };
